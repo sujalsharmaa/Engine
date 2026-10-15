@@ -1,9 +1,8 @@
 """
-Step 2: The Storyboard Compiler & Pydantic Schema
------------------------------------------------------------------
-Defines the strict type-safe schema for your video components. 
-The LLM output maps script text to structured visual commands, 
-synchronizing with the audio timestamps from Step 1.
+engine/storyboard_compiler.py
+-------------------------------------------------------------------------
+Complete Pydantic Schema & Audio-Synced Storyboard Compiler supporting
+8 ByteMonk-caliber components, 5 studio themes, and 16:9 / 9:16 aspect ratios.
 """
 
 import json
@@ -11,142 +10,237 @@ from pathlib import Path
 from typing import List, Literal, Optional, Union
 from pydantic import BaseModel, Field
 
+ThemeColor = Literal["cyan", "blue", "green", "red", "amber", "purple", "coral"]
+StudioTheme = Literal["cyber_cyan", "monk_purple", "emerald_matrix", "crimson_alert", "solar_gold"]
+AspectRatio = Literal["16:9", "9:16"]
+
 
 # =====================================================================
-# 1. VISUAL COMPONENT SCHEMAS (Your Proprietary Moat Primitives)
+# 1. THE 8 PROPRIETARY VISUAL COMPONENT SCHEMAS
 # =====================================================================
+
+class SceneHeroQuoteHook(BaseModel):
+    component_type: Literal["HeroQuoteHook"] = "HeroQuoteHook"
+    speaker_name: str
+    speaker_role: str = ""
+    quote_text: str
+    highlight_phrase: str = ""
+    year_badge: Optional[str] = None
+    theme_color: ThemeColor = "purple"
+    trigger_keyword: str = ""
+    exact_time: float = 0.0
+
 
 class TiltedCardItem(BaseModel):
     title: str
     value: str
     subtext: Optional[str] = None
-    color_theme: Literal["cyan", "blue", "green", "red", "amber"] = "cyan"
+    icon: str = "database"
+    color_theme: ThemeColor = "cyan"
     is_hero: bool = False
-    trigger_keyword: str  # The spoken word that snaps this card into view
+    trigger_keyword: str = ""
+    exact_time: float = 0.0
 
 
 class SceneTiltedCards(BaseModel):
     component_type: Literal["TiltedCardComparison"] = "TiltedCardComparison"
     heading: str
-    subheading: str
+    subheading: str = ""
     cards: List[TiltedCardItem]
+
+
+class ArchNodeItem(BaseModel):
+    node_id: str
+    label: str
+    sublabel: str = ""
+    icon: str = "server"
+    color_theme: ThemeColor = "cyan"
+    trigger_keyword: str = ""
+    exact_time: float = 0.0
+
+
+class ArchEdgeItem(BaseModel):
+    source: str
+    target: str
+    label: str = ""
+    color_theme: ThemeColor = "cyan"
+    is_blocked: bool = False
+
+
+class SceneArchitectureFlow(BaseModel):
+    component_type: Literal["ArchitectureFlowCanvas"] = "ArchitectureFlowCanvas"
+    heading: str
+    subheading: str = ""
+    layout_mode: Literal["pipeline", "fan_out", "comparison_split"] = "pipeline"
+    nodes: List[ArchNodeItem]
+    edges: List[ArchEdgeItem] = Field(default_factory=list)
 
 
 class SceneCodeWindow(BaseModel):
     component_type: Literal["MacOSCodeWindow"] = "MacOSCodeWindow"
-    filepath: str
-    code_snippet: str
+    heading: str = ""
+    filepath: str = "~/src/main.c"
+    language: str = "c"
+    code_lines: List[str]
     highlight_lines: List[int] = Field(default_factory=list)
+    badge_text: Optional[str] = None
+    trigger_keyword: str = ""
+    exact_time: float = 0.0
+
+
+class SceneRetroCrashDialog(BaseModel):
+    component_type: Literal["RetroCrashDialog"] = "RetroCrashDialog"
+    heading: str = "Single Point of Failure"
+    terminal_title: str = "system_daemon.exe"
+    terminal_logs: List[str] = Field(default_factory=list)
+    error_title: str = "System Error"
+    error_message: str = "Cannot connect to server. Service is not responding."
+    stamp_text: str = "CRITICAL BOTTLENECK"
+    trigger_keyword: str = ""
+    exact_time: float = 0.0
+
+
+class HexHighlightItem(BaseModel):
+    row: int
+    col_start: int
+    col_end: int
+    label: str
+    value_desc: str
+    color_theme: ThemeColor = "cyan"
+    trigger_keyword: str = ""
+    exact_time: float = 0.0
+
+
+class SceneHexMemoryInspector(BaseModel):
+    component_type: Literal["HexMemoryInspector"] = "HexMemoryInspector"
+    heading: str
+    subheading: str = "Binary Header Layout"
+    ascii_preview: str = "SQLite format 3\\0"
+    highlights: List[HexHighlightItem]
+
+
+class BTreeNodeSpec(BaseModel):
+    page_id: str
+    keys_text: str
+    subtext: str = ""
+    level: int = 0  # 0 = Root, 1 = Internal, 2 = Leaf
+    is_targetPath: bool = False
 
 
 class SceneBTreeZoom(BaseModel):
     component_type: Literal["BTreeCameraZoom"] = "BTreeCameraZoom"
-    query_text: str
-    target_page: int
-    focus_nodes: List[str] = Field(default_factory=list)
+    heading: str = "Logarithmic B-Tree Lookup"
+    query_text: str = "SELECT * FROM metrics WHERE id = 42"
+    nodes: List[BTreeNodeSpec]
+    trigger_keyword: str = ""
+    exact_time: float = 0.0
 
 
-# A union of all available component types in your custom studio engine
-SceneComponent = Union[SceneTiltedCards, SceneCodeWindow, SceneBTreeZoom]
+class CarouselCardItem(BaseModel):
+    title: str
+    subtitle: str
+    icon: str = "zap"
+    color_theme: ThemeColor = "cyan"
+    trigger_keyword: str = ""
+    exact_time: float = 0.0
+
+
+class SceneFeatureCarousel(BaseModel):
+    component_type: Literal["FeatureCarouselCards"] = "FeatureCarouselCards"
+    heading: str
+    subheading: str = ""
+    cards: List[CarouselCardItem]
+
+
+SceneComponent = Union[
+    SceneHeroQuoteHook,
+    SceneTiltedCards,
+    SceneArchitectureFlow,
+    SceneCodeWindow,
+    SceneRetroCrashDialog,
+    SceneHexMemoryInspector,
+    SceneBTreeZoom,
+    SceneFeatureCarousel,
+]
 
 
 class VideoScene(BaseModel):
     scene_id: str
     narration_text: str
-    start_time: float
-    end_time: float
+    start_time: float = 0.0
+    end_time: float = 8.0
     visual: SceneComponent
 
 
 class VideoStoryboard(BaseModel):
     title: str
+    aspect_ratio: AspectRatio = "16:9"
+    studio_theme: StudioTheme = "cyber_cyan"
     fps: int = 60
-    resolution: tuple = (1920, 1080)
     scenes: List[VideoScene] = Field(default_factory=list)
 
 
 # =====================================================================
-# 2. THE STORYBOARD COMPILER ENGINE
+# 2. THE AUDIO-SYNCED STORYBOARD COMPILER
 # =====================================================================
 
 class StoryboardCompiler:
     def __init__(self, timestamps_json_path: str = "word_timestamps.json"):
+        self.words = []
         ts_path = Path(timestamps_json_path)
-        if not ts_path.exists():
-            raise FileNotFoundError(f"Timestamp file missing: {ts_path}. Run Step 1 first!")
-        
-        with open(ts_path, "r", encoding="utf-8") as f:
-            data = json.load(f)
+        if ts_path.exists():
+            data = json.loads(ts_path.read_text(encoding="utf-8"))
             self.words = data.get("words", [])
 
-    def find_word_time(self, keyword: str) -> float:
-        """Helper to match a keyword to its exact timestamp from Step 1 data."""
+    def find_word_time(self, keyword: str, min_time: float = 0.0) -> float:
+        """Finds the first occurrence of `keyword` at or after `min_time`."""
+        if not keyword or not self.words:
+            return min_time
         kw = keyword.strip().lower()
         for item in self.words:
-            if kw in item["word"].strip().lower():
-                return float(item["start"])
-        return 0.0
+            w_start = float(item.get("start", 0.0))
+            if w_start >= min_time and kw in item.get("word", "").strip().lower():
+                return round(w_start, 3)
+        return min_time
 
-    def compile_storyboard(self, raw_llm_spec_path: str, output_path: str = "compiled_storyboard.json") -> VideoStoryboard:
-        """
-        Takes raw blueprint input, injects precise millisecond timestamps 
-        from the audio alignment data, and validates via Pydantic.
-        """
+    def compile_storyboard(
+        self,
+        raw_llm_spec_path: str,
+        output_path: str = "compiled_storyboard.json"
+    ) -> VideoStoryboard:
         spec_path = Path(raw_llm_spec_path)
         if not spec_path.exists():
-            raise FileNotFoundError(f"LLM spec blueprint not found: {spec_path}")
+            raise FileNotFoundError(f"Blueprint file not found: {spec_path}")
 
         raw_data = json.loads(spec_path.read_text(encoding="utf-8"))
-        
-        # Post-process scenes to auto-bind keyword triggers to actual audio times
-        for scene in raw_data.get("scenes", []):
-            visual = scene.get("visual", {})
-            if visual.get("component_type") == "TiltedCardComparison":
-                for card in visual.get("cards", []):
-                    kw = card.get("trigger_keyword", "")
-                    # Automatically update card timing from audio alignment
-                    card["exact_time"] = self.find_word_time(kw)
 
-        # Validate everything through Pydantic
+        # Bind trigger keywords inside every scene to actual spoken timestamps
+        cursor_time = 0.0
+        for scene in raw_data.get("scenes", []):
+            s_start = float(scene.get("start_time", cursor_time))
+            visual = scene.get("visual", {})
+            c_type = visual.get("component_type", "")
+
+            if c_type == "TiltedCardComparison":
+                for card in visual.get("cards", []):
+                    card["exact_time"] = self.find_word_time(card.get("trigger_keyword", ""), s_start)
+            elif c_type == "ArchitectureFlowCanvas":
+                for node in visual.get("nodes", []):
+                    node["exact_time"] = self.find_word_time(node.get("trigger_keyword", ""), s_start)
+            elif c_type == "HexMemoryInspector":
+                for hl in visual.get("highlights", []):
+                    hl["exact_time"] = self.find_word_time(hl.get("trigger_keyword", ""), s_start)
+            elif c_type == "FeatureCarouselCards":
+                for c_item in visual.get("cards", []):
+                    c_item["exact_time"] = self.find_word_time(c_item.get("trigger_keyword", ""), s_start)
+            else:
+                if "trigger_keyword" in visual:
+                    visual["exact_time"] = self.find_word_time(visual.get("trigger_keyword", ""), s_start)
+
+            cursor_time = float(scene.get("end_time", s_start + 6.0))
+
         storyboard = VideoStoryboard(**raw_data)
-        
         out_file = Path(output_path)
         out_file.write_text(storyboard.model_dump_json(indent=2), encoding="utf-8")
-        print(f"[+] Storyboard successfully compiled and validated! Saved to {out_file.resolve()}")
-        
+        print(f"[+] Compiled {len(storyboard.scenes)} scenes ({storyboard.aspect_ratio}) -> {out_file.resolve()}")
         return storyboard
-
-
-# --- Example Local Test ---
-if __name__ == "__main__":
-    # 1. Create a sample LLM blueprint file to demonstrate compilation
-    sample_blueprint = {
-        "title": "SQLite vs Traditional Databases",
-        "scenes": [
-            {
-                "scene_id": "scene_database_scale",
-                "narration_text": "While MySQL has 5 million and Postgres has 1 million, SQLite hits 1 trillion deployments.",
-                "start_time": 25.0,
-                "end_time": 40.0,
-                "visual": {
-                    "component_type": "TiltedCardComparison",
-                    "heading": "Database Deployment Scale",
-                    "subheading": "Comparing active production installations",
-                    "cards": [
-                        {"title": "MySQL", "value": "5M", "color_theme": "cyan", "trigger_keyword": "million"},
-                        {"title": "PostgreSQL", "value": "1M", "color_theme": "blue", "trigger_keyword": "postgres"},
-                        {"title": "SQLite", "value": "1T", "subtext": "Active deployments", "color_theme": "green", "is_hero": True, "trigger_keyword": "trillion"}
-                    ]
-                }
-            }
-        ]
-    }
-    
-    blueprint_path = Path("sample_blueprint.json")
-    blueprint_path.write_text(json.dumps(sample_blueprint, indent=2))
-
-    try:
-        compiler = StoryboardCompiler("word_timestamps.json")
-        compiler.compile_storyboard("sample_blueprint.json")
-    except FileNotFoundError as e:
-        print(f"[-] Note: {e} (Make sure word_timestamps.json exists from Step 1).")

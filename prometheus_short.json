@@ -1,0 +1,91 @@
+{
+  "title": "Why Prometheus Rules Cloud Monitoring",
+  "aspect_ratio": "9:16",
+  "studio_theme": "cyber_cyan",
+  "fps": 60,
+  "scenes": [
+    {
+      "scene_id": "hook_crash",
+      "narration_text": "When your servers crash at 3 AM, traditional push monitoring floods your network and fails.",
+      "start_time": 0.0,
+      "end_time": 5.0,
+      "visual": {
+        "component_type": "RetroCrashDialog",
+        "heading": "Why Push Monitoring Fails",
+        "error_title": "Metrics Collector Overload",
+        "error_message": "Connection flood: 50,000 agents pushing simultaneously.",
+        "trigger_keyword": "crash"
+      }
+    },
+    {
+      "scene_id": "push_vs_pull",
+      "narration_text": "Prometheus flips the script by pulling metrics on its own schedule.",
+      "start_time": 5.0,
+      "end_time": 11.0,
+      "visual": {
+        "component_type": "TiltedCardComparison",
+        "heading": "Push vs. Pull Model",
+        "subheading": "Cloud-Native Telemetry Architecture",
+        "cards": [
+          {
+            "title": "Legacy Push",
+            "value": "Flood",
+            "subtext": "Spikes overwhelm server",
+            "icon": "alert",
+            "color_theme": "red",
+            "trigger_keyword": "push"
+          },
+          {
+            "title": "Prometheus",
+            "value": "Pull",
+            "subtext": "Scrapes HTTP /metrics endpoints",
+            "icon": "prometheus",
+            "color_theme": "cyan",
+            "is_hero": true,
+            "trigger_keyword": "pull"
+          }
+        ]
+      }
+    },
+    {
+      "scene_id": "arch_flow",
+      "narration_text": "It scrapes targets, writes to a time-series database, and powers Grafana dashboards.",
+      "start_time": 11.0,
+      "end_time": 17.0,
+      "visual": {
+        "component_type": "ArchitectureFlowCanvas",
+        "heading": "Prometheus Architecture",
+        "subheading": "End-to-End Scrape Pipeline",
+        "nodes": [
+          { "node_id": "app", "label": "Microservices", "sublabel": "/metrics HTTP", "icon": "server", "color_theme": "blue" },
+          { "node_id": "prom", "label": "Prometheus", "sublabel": "TSDB + PromQL", "icon": "database", "color_theme": "cyan" },
+          { "node_id": "graf", "label": "Grafana", "sublabel": "Live Alerts & UI", "icon": "globe", "color_theme": "green" }
+        ],
+        "edges": [
+          { "source": "app", "target": "prom", "label": "HTTP Pull", "color_theme": "cyan" },
+          { "source": "prom", "target": "graf", "label": "PromQL Query", "color_theme": "green" }
+        ]
+      }
+    },
+    {
+      "scene_id": "promql_code",
+      "narration_text": "With one line of PromQL, you can pinpoint latency spikes across thousands of pods.",
+      "start_time": 17.0,
+      "end_time": 23.0,
+      "visual": {
+        "component_type": "MacOSCodeWindow",
+        "heading": "PromQL Instant Query",
+        "filepath": "~/prometheus/alerts.promql",
+        "code_lines": [
+          "# 99th Percentile API Latency",
+          "histogram_quantile(0.99,",
+          "  sum(rate(http_request_duration_seconds_bucket[5m]))",
+          "  by (le, service)",
+          ") > 0.5"
+        ],
+        "highlight_lines": [2, 5],
+        "badge_text": "Sub-ms Query"
+      }
+    }
+  ]
+}
