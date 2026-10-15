@@ -1,0 +1,106 @@
+{
+  "audio_path": "voiceover.mp3",
+  "duration": 10.411,
+  "words": [
+    {
+      "word": " While",
+      "start": 0.0,
+      "end": 1.0
+    },
+    {
+      "word": " my",
+      "start": 1.0,
+      "end": 1.34
+    },
+    {
+      "word": " SQL",
+      "start": 1.34,
+      "end": 1.74
+    },
+    {
+      "word": " has",
+      "start": 1.74,
+      "end": 2.0
+    },
+    {
+      "word": " 5",
+      "start": 2.0,
+      "end": 2.4
+    },
+    {
+      "word": " million",
+      "start": 2.4,
+      "end": 2.7
+    },
+    {
+      "word": " installations",
+      "start": 2.7,
+      "end": 3.32
+    },
+    {
+      "word": " and",
+      "start": 3.32,
+      "end": 4.06
+    },
+    {
+      "word": " Postgres",
+      "start": 4.06,
+      "end": 4.52
+    },
+    {
+      "word": " has",
+      "start": 4.52,
+      "end": 4.76
+    },
+    {
+      "word": " 1",
+      "start": 4.76,
+      "end": 5.1
+    },
+    {
+      "word": " million,",
+      "start": 5.1,
+      "end": 5.42
+    },
+    {
+      "word": " SQL",
+      "start": 5.98,
+      "end": 6.36
+    },
+    {
+      "word": " light",
+      "start": 6.36,
+      "end": 6.7
+    },
+    {
+      "word": " quietly",
+      "start": 6.7,
+      "end": 7.18
+    },
+    {
+      "word": " powers",
+      "start": 7.18,
+      "end": 7.58
+    },
+    {
+      "word": " for",
+      "start": 7.58,
+      "end": 7.92
+    },
+    {
+      "word": " trillion",
+      "start": 7.92,
+      "end": 8.54
+    },
+    {
+      "word": " active",
+      "start": 8.54,
+      "end": 8.94
+    },
+    {
+      "word": " devices.",
+      "start": 8.94,
+      "end": 9.44
+    }
+  ]
+}
