@@ -1,0 +1,2862 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VideoStoryboard",
+  "type": "object",
+  "required": [
+    "scenes"
+  ],
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "aspect_ratio": {
+      "enum": [
+        "16:9",
+        "9:16",
+        "1:1"
+      ]
+    },
+    "studio_theme": {
+      "enum": [
+        "cyber_cyan",
+        "monk_purple",
+        "emerald_matrix",
+        "crimson_alert",
+        "solar_gold",
+        "midnight_blue",
+        "sunset_orange",
+        "paper_light"
+      ]
+    },
+    "fps": {
+      "type": "integer",
+      "default": 30
+    },
+    "captions": {
+      "enum": [
+        "off",
+        "pop",
+        "line"
+      ]
+    },
+    "background": {
+      "enum": [
+        "grid",
+        "plain",
+        "spotlight_only"
+      ]
+    },
+    "scenes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "scene_id",
+          "narration_text",
+          "visual"
+        ],
+        "properties": {
+          "scene_id": {
+            "type": "string"
+          },
+          "narration_text": {
+            "type": "string"
+          },
+          "transition": {
+            "enum": [
+              "fade",
+              "slide",
+              "zoom",
+              "wipe",
+              "cut"
+            ]
+          },
+          "camera": {
+            "enum": [
+              "static",
+              "push_in",
+              "pull_out",
+              "drift"
+            ]
+          },
+          "visual": {
+            "oneOf": [
+              {
+                "additionalProperties": true,
+                "properties": {
+                  "trigger_keyword": {
+                    "default": "",
+                    "title": "Trigger Keyword",
+                    "type": "string"
+                  },
+                  "exact_time": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Exact Time"
+                  },
+                  "component_type": {
+                    "const": "ArchitectureFlowCanvas",
+                    "default": "ArchitectureFlowCanvas",
+                    "title": "Component Type",
+                    "type": "string"
+                  },
+                  "heading": {
+                    "default": "",
+                    "title": "Heading",
+                    "type": "string"
+                  },
+                  "subheading": {
+                    "default": "",
+                    "title": "Subheading",
+                    "type": "string"
+                  },
+                  "layout_mode": {
+                    "default": "pipeline",
+                    "enum": [
+                      "pipeline",
+                      "fan_out",
+                      "comparison_split"
+                    ],
+                    "title": "Layout Mode",
+                    "type": "string"
+                  },
+                  "nodes": {
+                    "items": {
+                      "$ref": "#/$defs/ArchNodeItem"
+                    },
+                    "title": "Nodes",
+                    "type": "array"
+                  },
+                  "edges": {
+                    "items": {
+                      "$ref": "#/$defs/ArchEdgeItem"
+                    },
+                    "title": "Edges",
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "nodes"
+                ],
+                "title": "Spec",
+                "type": "object"
+              },
+              {
+                "additionalProperties": true,
+                "properties": {
+                  "trigger_keyword": {
+                    "default": "",
+                    "title": "Trigger Keyword",
+                    "type": "string"
+                  },
+                  "exact_time": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Exact Time"
+                  },
+                  "component_type": {
+                    "const": "BTreeCameraZoom",
+                    "default": "BTreeCameraZoom",
+                    "title": "Component Type",
+                    "type": "string"
+                  },
+                  "heading": {
+                    "default": "Logarithmic B-Tree Lookup",
+                    "title": "Heading",
+                    "type": "string"
+                  },
+                  "subheading": {
+                    "default": "",
+                    "title": "Subheading",
+                    "type": "string"
+                  },
+                  "query_text": {
+                    "default": "SELECT * FROM metrics WHERE id = 42",
+                    "title": "Query Text",
+                    "type": "string"
+                  },
+                  "nodes": {
+                    "items": {
+                      "$ref": "#/$defs/BTreeNodeSpec"
+                    },
+                    "title": "Nodes",
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "nodes"
+                ],
+                "title": "Spec",
+                "type": "object"
+              },
+              {
+                "additionalProperties": true,
+                "properties": {
+                  "trigger_keyword": {
+                    "default": "",
+                    "title": "Trigger Keyword",
+                    "type": "string"
+                  },
+                  "exact_time": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Exact Time"
+                  },
+                  "component_type": {
+                    "const": "BarChart",
+                    "default": "BarChart",
+                    "title": "Component Type",
+                    "type": "string"
+                  },
+                  "heading": {
+                    "default": "",
+                    "title": "Heading",
+                    "type": "string"
+                  },
+                  "subheading": {
+                    "default": "",
+                    "title": "Subheading",
+                    "type": "string"
+                  },
+                  "bars": {
+                    "items": {
+                      "$ref": "#/$defs/BarItem"
+                    },
+                    "title": "Bars",
+                    "type": "array"
+                  },
+                  "orientation": {
+                    "default": "auto",
+                    "enum": [
+                      "auto",
+                      "horizontal",
+                      "vertical"
+                    ],
+                    "title": "Orientation",
+                    "type": "string"
+                  },
+                  "value_prefix": {
+                    "default": "",
+                    "title": "Value Prefix",
+                    "type": "string"
+                  },
+                  "value_suffix": {
+                    "default": "",
+                    "title": "Value Suffix",
+                    "type": "string"
+                  },
+                  "decimals": {
+                    "default": 0,
+                    "title": "Decimals",
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "bars"
+                ],
+                "title": "Spec",
+                "type": "object"
+              },
+              {
+                "additionalProperties": true,
+                "properties": {
+                  "trigger_keyword": {
+                    "default": "",
+                    "title": "Trigger Keyword",
+                    "type": "string"
+                  },
+                  "exact_time": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Exact Time"
+                  },
+                  "component_type": {
+                    "const": "BigStat",
+                    "default": "BigStat",
+                    "title": "Component Type",
+                    "type": "string"
+                  },
+                  "heading": {
+                    "default": "",
+                    "title": "Heading",
+                    "type": "string"
+                  },
+                  "subheading": {
+                    "default": "",
+                    "title": "Subheading",
+                    "type": "string"
+                  },
+                  "stats": {
+                    "items": {
+                      "$ref": "#/$defs/StatItem"
+                    },
+                    "title": "Stats",
+                    "type": "array"
+                  },
+                  "count_up": {
+                    "default": true,
+                    "title": "Count Up",
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "stats"
+                ],
+                "title": "Spec",
+                "type": "object"
+              },
+              {
+                "additionalProperties": true,
+                "properties": {
+                  "trigger_keyword": {
+                    "default": "",
+                    "title": "Trigger Keyword",
+                    "type": "string"
+                  },
+                  "exact_time": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Exact Time"
+                  },
+                  "component_type": {
+                    "const": "CallToAction",
+                    "default": "CallToAction",
+                    "title": "Component Type",
+                    "type": "string"
+                  },
+                  "heading": {
+                    "default": "",
+                    "title": "Heading",
+                    "type": "string"
+                  },
+                  "subheading": {
+                    "default": "",
+                    "title": "Subheading",
+                    "type": "string"
+                  },
+                  "title": {
+                    "default": "Enjoyed this?",
+                    "title": "Title",
+                    "type": "string"
+                  },
+                  "subtitle": {
+                    "default": "",
+                    "title": "Subtitle",
+                    "type": "string"
+                  },
+                  "button_text": {
+                    "default": "Follow for more",
+                    "title": "Button Text",
+                    "type": "string"
+                  },
+                  "handle": {
+                    "default": "",
+                    "title": "Handle",
+                    "type": "string"
+                  },
+                  "icon": {
+                    "default": "bell",
+                    "title": "Icon",
+                    "type": "string"
+                  },
+                  "theme_color": {
+                    "default": "accent",
+                    "enum": [
+                      "accent",
+                      "cyan",
+                      "blue",
+                      "green",
+                      "red",
+                      "amber",
+                      "purple",
+                      "coral",
+                      "pink",
+                      "teal",
+                      "lime",
+                      "gray"
+                    ],
+                    "title": "Theme Color",
+                    "type": "string"
+                  }
+                },
+                "title": "Spec",
+                "type": "object"
+              },
+              {
+                "additionalProperties": true,
+                "properties": {
+                  "trigger_keyword": {
+                    "default": "",
+                    "title": "Trigger Keyword",
+                    "type": "string"
+                  },
+                  "exact_time": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Exact Time"
+                  },
+                  "component_type": {
+                    "const": "ComparisonTable",
+                    "default": "ComparisonTable",
+                    "title": "Component Type",
+                    "type": "string"
+                  },
+                  "heading": {
+                    "default": "",
+                    "title": "Heading",
+                    "type": "string"
+                  },
+                  "subheading": {
+                    "default": "",
+                    "title": "Subheading",
+                    "type": "string"
+                  },
+                  "columns": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "title": "Columns",
+                    "type": "array"
+                  },
+                  "rows": {
+                    "items": {
+                      "$ref": "#/$defs/TableRow"
+                    },
+                    "title": "Rows",
+                    "type": "array"
+                  },
+                  "highlight_column": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Highlight Column"
+                  }
+                },
+                "required": [
+                  "columns",
+                  "rows"
+                ],
+                "title": "Spec",
+                "type": "object"
+              },
+              {
+                "additionalProperties": true,
+                "properties": {
+                  "trigger_keyword": {
+                    "default": "",
+                    "title": "Trigger Keyword",
+                    "type": "string"
+                  },
+                  "exact_time": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Exact Time"
+                  },
+                  "component_type": {
+                    "const": "DonutChart",
+                    "default": "DonutChart",
+                    "title": "Component Type",
+                    "type": "string"
+                  },
+                  "heading": {
+                    "default": "",
+                    "title": "Heading",
+                    "type": "string"
+                  },
+                  "subheading": {
+                    "default": "",
+                    "title": "Subheading",
+                    "type": "string"
+                  },
+                  "slices": {
+                    "items": {
+                      "$ref": "#/$defs/SliceItem"
+                    },
+                    "title": "Slices",
+                    "type": "array"
+                  },
+                  "center_value": {
+                    "default": "",
+                    "title": "Center Value",
+                    "type": "string"
+                  },
+                  "center_label": {
+                    "default": "",
+                    "title": "Center Label",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "slices"
+                ],
+                "title": "Spec",
+                "type": "object"
+              },
+              {
+                "additionalProperties": true,
+                "properties": {
+                  "trigger_keyword": {
+                    "default": "",
+                    "title": "Trigger Keyword",
+                    "type": "string"
+                  },
+                  "exact_time": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Exact Time"
+                  },
+                  "component_type": {
+                    "const": "FeatureCarouselCards",
+                    "default": "FeatureCarouselCards",
+                    "title": "Component Type",
+                    "type": "string"
+                  },
+                  "heading": {
+                    "default": "",
+                    "title": "Heading",
+                    "type": "string"
+                  },
+                  "subheading": {
+                    "default": "",
+                    "title": "Subheading",
+                    "type": "string"
+                  },
+                  "cards": {
+                    "items": {
+                      "$ref": "#/$defs/CarouselCardItem"
+                    },
+                    "title": "Cards",
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "cards"
+                ],
+                "title": "Spec",
+                "type": "object"
+              },
+              {
+                "additionalProperties": true,
+                "properties": {
+                  "trigger_keyword": {
+                    "default": "",
+                    "title": "Trigger Keyword",
+                    "type": "string"
+                  },
+                  "exact_time": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Exact Time"
+                  },
+                  "component_type": {
+                    "const": "HeroQuoteHook",
+                    "default": "HeroQuoteHook",
+                    "title": "Component Type",
+                    "type": "string"
+                  },
+                  "heading": {
+                    "default": "",
+                    "title": "Heading",
+                    "type": "string"
+                  },
+                  "subheading": {
+                    "default": "",
+                    "title": "Subheading",
+                    "type": "string"
+                  },
+                  "speaker_name": {
+                    "title": "Speaker Name",
+                    "type": "string"
+                  },
+                  "speaker_role": {
+                    "default": "",
+                    "title": "Speaker Role",
+                    "type": "string"
+                  },
+                  "quote_text": {
+                    "title": "Quote Text",
+                    "type": "string"
+                  },
+                  "highlight_phrase": {
+                    "default": "",
+                    "title": "Highlight Phrase",
+                    "type": "string"
+                  },
+                  "year_badge": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Year Badge"
+                  },
+                  "theme_color": {
+                    "default": "purple",
+                    "enum": [
+                      "accent",
+                      "cyan",
+                      "blue",
+                      "green",
+                      "red",
+                      "amber",
+                      "purple",
+                      "coral",
+                      "pink",
+                      "teal",
+                      "lime",
+                      "gray"
+                    ],
+                    "title": "Theme Color",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "speaker_name",
+                  "quote_text"
+                ],
+                "title": "Spec",
+                "type": "object"
+              },
+              {
+                "additionalProperties": true,
+                "properties": {
+                  "trigger_keyword": {
+                    "default": "",
+                    "title": "Trigger Keyword",
+                    "type": "string"
+                  },
+                  "exact_time": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Exact Time"
+                  },
+                  "component_type": {
+                    "const": "HexMemoryInspector",
+                    "default": "HexMemoryInspector",
+                    "title": "Component Type",
+                    "type": "string"
+                  },
+                  "heading": {
+                    "default": "",
+                    "title": "Heading",
+                    "type": "string"
+                  },
+                  "subheading": {
+                    "default": "Binary Header Layout",
+                    "title": "Subheading",
+                    "type": "string"
+                  },
+                  "rows": {
+                    "items": {
+                      "$ref": "#/$defs/HexRow"
+                    },
+                    "title": "Rows",
+                    "type": "array"
+                  },
+                  "highlights": {
+                    "items": {
+                      "$ref": "#/$defs/HexHighlight"
+                    },
+                    "title": "Highlights",
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "highlights"
+                ],
+                "title": "Spec",
+                "type": "object"
+              },
+              {
+                "additionalProperties": true,
+                "properties": {
+                  "trigger_keyword": {
+                    "default": "",
+                    "title": "Trigger Keyword",
+                    "type": "string"
+                  },
+                  "exact_time": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Exact Time"
+                  },
+                  "component_type": {
+                    "const": "ImageShowcase",
+                    "default": "ImageShowcase",
+                    "title": "Component Type",
+                    "type": "string"
+                  },
+                  "heading": {
+                    "default": "",
+                    "title": "Heading",
+                    "type": "string"
+                  },
+                  "subheading": {
+                    "default": "",
+                    "title": "Subheading",
+                    "type": "string"
+                  },
+                  "images": {
+                    "items": {
+                      "$ref": "#/$defs/ImageItem"
+                    },
+                    "title": "Images",
+                    "type": "array"
+                  },
+                  "style": {
+                    "default": "browser",
+                    "enum": [
+                      "plain",
+                      "browser",
+                      "phone",
+                      "polaroid"
+                    ],
+                    "title": "Style",
+                    "type": "string"
+                  },
+                  "zoom": {
+                    "default": true,
+                    "title": "Zoom",
+                    "type": "boolean"
+                  },
+                  "theme_color": {
+                    "default": "accent",
+                    "enum": [
+                      "accent",
+                      "cyan",
+                      "blue",
+                      "green",
+                      "red",
+                      "amber",
+                      "purple",
+                      "coral",
+                      "pink",
+                      "teal",
+                      "lime",
+                      "gray"
+                    ],
+                    "title": "Theme Color",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "images"
+                ],
+                "title": "Spec",
+                "type": "object"
+              },
+              {
+                "additionalProperties": true,
+                "properties": {
+                  "trigger_keyword": {
+                    "default": "",
+                    "title": "Trigger Keyword",
+                    "type": "string"
+                  },
+                  "exact_time": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Exact Time"
+                  },
+                  "component_type": {
+                    "const": "KeyPointsList",
+                    "default": "KeyPointsList",
+                    "title": "Component Type",
+                    "type": "string"
+                  },
+                  "heading": {
+                    "default": "",
+                    "title": "Heading",
+                    "type": "string"
+                  },
+                  "subheading": {
+                    "default": "",
+                    "title": "Subheading",
+                    "type": "string"
+                  },
+                  "items": {
+                    "items": {
+                      "$ref": "#/$defs/ListItem"
+                    },
+                    "title": "Items",
+                    "type": "array"
+                  },
+                  "style": {
+                    "default": "numbered",
+                    "enum": [
+                      "numbered",
+                      "bullets",
+                      "checklist",
+                      "icons"
+                    ],
+                    "title": "Style",
+                    "type": "string"
+                  },
+                  "countdown": {
+                    "default": false,
+                    "title": "Countdown",
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "items"
+                ],
+                "title": "Spec",
+                "type": "object"
+              },
+              {
+                "additionalProperties": true,
+                "properties": {
+                  "trigger_keyword": {
+                    "default": "",
+                    "title": "Trigger Keyword",
+                    "type": "string"
+                  },
+                  "exact_time": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Exact Time"
+                  },
+                  "component_type": {
+                    "const": "KineticText",
+                    "default": "KineticText",
+                    "title": "Component Type",
+                    "type": "string"
+                  },
+                  "heading": {
+                    "default": "",
+                    "title": "Heading",
+                    "type": "string"
+                  },
+                  "subheading": {
+                    "default": "",
+                    "title": "Subheading",
+                    "type": "string"
+                  },
+                  "text": {
+                    "default": "",
+                    "title": "Text",
+                    "type": "string"
+                  },
+                  "emphasis_words": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "title": "Emphasis Words",
+                    "type": "array"
+                  },
+                  "theme_color": {
+                    "default": "accent",
+                    "enum": [
+                      "accent",
+                      "cyan",
+                      "blue",
+                      "green",
+                      "red",
+                      "amber",
+                      "purple",
+                      "coral",
+                      "pink",
+                      "teal",
+                      "lime",
+                      "gray"
+                    ],
+                    "title": "Theme Color",
+                    "type": "string"
+                  },
+                  "size": {
+                    "default": 54,
+                    "title": "Size",
+                    "type": "integer"
+                  }
+                },
+                "title": "Spec",
+                "type": "object"
+              },
+              {
+                "additionalProperties": true,
+                "properties": {
+                  "trigger_keyword": {
+                    "default": "",
+                    "title": "Trigger Keyword",
+                    "type": "string"
+                  },
+                  "exact_time": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Exact Time"
+                  },
+                  "component_type": {
+                    "const": "LineChart",
+                    "default": "LineChart",
+                    "title": "Component Type",
+                    "type": "string"
+                  },
+                  "heading": {
+                    "default": "",
+                    "title": "Heading",
+                    "type": "string"
+                  },
+                  "subheading": {
+                    "default": "",
+                    "title": "Subheading",
+                    "type": "string"
+                  },
+                  "series": {
+                    "items": {
+                      "$ref": "#/$defs/Series"
+                    },
+                    "title": "Series",
+                    "type": "array"
+                  },
+                  "x_labels": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "title": "X Labels",
+                    "type": "array"
+                  },
+                  "y_prefix": {
+                    "default": "",
+                    "title": "Y Prefix",
+                    "type": "string"
+                  },
+                  "y_suffix": {
+                    "default": "",
+                    "title": "Y Suffix",
+                    "type": "string"
+                  },
+                  "annotations": {
+                    "items": {
+                      "$ref": "#/$defs/Annotation"
+                    },
+                    "title": "Annotations",
+                    "type": "array"
+                  },
+                  "fill_area": {
+                    "default": true,
+                    "title": "Fill Area",
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "series"
+                ],
+                "title": "Spec",
+                "type": "object"
+              },
+              {
+                "additionalProperties": true,
+                "properties": {
+                  "trigger_keyword": {
+                    "default": "",
+                    "title": "Trigger Keyword",
+                    "type": "string"
+                  },
+                  "exact_time": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Exact Time"
+                  },
+                  "component_type": {
+                    "const": "MacOSCodeWindow",
+                    "default": "MacOSCodeWindow",
+                    "title": "Component Type",
+                    "type": "string"
+                  },
+                  "heading": {
+                    "default": "",
+                    "title": "Heading",
+                    "type": "string"
+                  },
+                  "subheading": {
+                    "default": "",
+                    "title": "Subheading",
+                    "type": "string"
+                  },
+                  "filepath": {
+                    "default": "~/src/main.py",
+                    "title": "Filepath",
+                    "type": "string"
+                  },
+                  "language": {
+                    "default": "python",
+                    "title": "Language",
+                    "type": "string"
+                  },
+                  "code_lines": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "title": "Code Lines",
+                    "type": "array"
+                  },
+                  "highlight_lines": {
+                    "items": {
+                      "type": "integer"
+                    },
+                    "title": "Highlight Lines",
+                    "type": "array"
+                  },
+                  "steps": {
+                    "items": {
+                      "$ref": "#/$defs/CodeStep"
+                    },
+                    "title": "Steps",
+                    "type": "array"
+                  },
+                  "reveal": {
+                    "default": "lines",
+                    "enum": [
+                      "lines",
+                      "typing",
+                      "instant"
+                    ],
+                    "title": "Reveal",
+                    "type": "string"
+                  },
+                  "diff": {
+                    "default": false,
+                    "title": "Diff",
+                    "type": "boolean"
+                  },
+                  "show_line_numbers": {
+                    "default": true,
+                    "title": "Show Line Numbers",
+                    "type": "boolean"
+                  },
+                  "badge_text": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Badge Text"
+                  }
+                },
+                "required": [
+                  "code_lines"
+                ],
+                "title": "Spec",
+                "type": "object"
+              },
+              {
+                "additionalProperties": true,
+                "properties": {
+                  "trigger_keyword": {
+                    "default": "",
+                    "title": "Trigger Keyword",
+                    "type": "string"
+                  },
+                  "exact_time": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Exact Time"
+                  },
+                  "component_type": {
+                    "const": "MindMap",
+                    "default": "MindMap",
+                    "title": "Component Type",
+                    "type": "string"
+                  },
+                  "heading": {
+                    "default": "",
+                    "title": "Heading",
+                    "type": "string"
+                  },
+                  "subheading": {
+                    "default": "",
+                    "title": "Subheading",
+                    "type": "string"
+                  },
+                  "center": {
+                    "title": "Center",
+                    "type": "string"
+                  },
+                  "center_icon": {
+                    "default": "",
+                    "title": "Center Icon",
+                    "type": "string"
+                  },
+                  "branches": {
+                    "items": {
+                      "$ref": "#/$defs/Branch"
+                    },
+                    "title": "Branches",
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "center",
+                  "branches"
+                ],
+                "title": "Spec",
+                "type": "object"
+              },
+              {
+                "additionalProperties": true,
+                "properties": {
+                  "trigger_keyword": {
+                    "default": "",
+                    "title": "Trigger Keyword",
+                    "type": "string"
+                  },
+                  "exact_time": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Exact Time"
+                  },
+                  "component_type": {
+                    "const": "ProcessSteps",
+                    "default": "ProcessSteps",
+                    "title": "Component Type",
+                    "type": "string"
+                  },
+                  "heading": {
+                    "default": "",
+                    "title": "Heading",
+                    "type": "string"
+                  },
+                  "subheading": {
+                    "default": "",
+                    "title": "Subheading",
+                    "type": "string"
+                  },
+                  "steps": {
+                    "items": {
+                      "$ref": "#/$defs/StepItem"
+                    },
+                    "title": "Steps",
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "steps"
+                ],
+                "title": "Spec",
+                "type": "object"
+              },
+              {
+                "additionalProperties": true,
+                "properties": {
+                  "trigger_keyword": {
+                    "default": "",
+                    "title": "Trigger Keyword",
+                    "type": "string"
+                  },
+                  "exact_time": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Exact Time"
+                  },
+                  "component_type": {
+                    "const": "ProsCons",
+                    "default": "ProsCons",
+                    "title": "Component Type",
+                    "type": "string"
+                  },
+                  "heading": {
+                    "default": "",
+                    "title": "Heading",
+                    "type": "string"
+                  },
+                  "subheading": {
+                    "default": "",
+                    "title": "Subheading",
+                    "type": "string"
+                  },
+                  "pros_title": {
+                    "default": "Pros",
+                    "title": "Pros Title",
+                    "type": "string"
+                  },
+                  "cons_title": {
+                    "default": "Cons",
+                    "title": "Cons Title",
+                    "type": "string"
+                  },
+                  "pros": {
+                    "items": {
+                      "$ref": "#/$defs/ProsConsItem"
+                    },
+                    "title": "Pros",
+                    "type": "array"
+                  },
+                  "cons": {
+                    "items": {
+                      "$ref": "#/$defs/ProsConsItem"
+                    },
+                    "title": "Cons",
+                    "type": "array"
+                  },
+                  "pros_color": {
+                    "default": "green",
+                    "enum": [
+                      "accent",
+                      "cyan",
+                      "blue",
+                      "green",
+                      "red",
+                      "amber",
+                      "purple",
+                      "coral",
+                      "pink",
+                      "teal",
+                      "lime",
+                      "gray"
+                    ],
+                    "title": "Pros Color",
+                    "type": "string"
+                  },
+                  "cons_color": {
+                    "default": "red",
+                    "enum": [
+                      "accent",
+                      "cyan",
+                      "blue",
+                      "green",
+                      "red",
+                      "amber",
+                      "purple",
+                      "coral",
+                      "pink",
+                      "teal",
+                      "lime",
+                      "gray"
+                    ],
+                    "title": "Cons Color",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "pros",
+                  "cons"
+                ],
+                "title": "Spec",
+                "type": "object"
+              },
+              {
+                "additionalProperties": true,
+                "properties": {
+                  "trigger_keyword": {
+                    "default": "",
+                    "title": "Trigger Keyword",
+                    "type": "string"
+                  },
+                  "exact_time": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Exact Time"
+                  },
+                  "component_type": {
+                    "const": "RetroCrashDialog",
+                    "default": "RetroCrashDialog",
+                    "title": "Component Type",
+                    "type": "string"
+                  },
+                  "heading": {
+                    "default": "Single Point of Failure",
+                    "title": "Heading",
+                    "type": "string"
+                  },
+                  "subheading": {
+                    "default": "",
+                    "title": "Subheading",
+                    "type": "string"
+                  },
+                  "terminal_title": {
+                    "default": "system_daemon.exe",
+                    "title": "Terminal Title",
+                    "type": "string"
+                  },
+                  "terminal_logs": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "title": "Terminal Logs",
+                    "type": "array"
+                  },
+                  "error_title": {
+                    "default": "System Error",
+                    "title": "Error Title",
+                    "type": "string"
+                  },
+                  "error_message": {
+                    "default": "Cannot connect to server. Service is not responding.",
+                    "title": "Error Message",
+                    "type": "string"
+                  },
+                  "stamp_text": {
+                    "default": "CRITICAL BOTTLENECK",
+                    "title": "Stamp Text",
+                    "type": "string"
+                  }
+                },
+                "title": "Spec",
+                "type": "object"
+              },
+              {
+                "additionalProperties": true,
+                "properties": {
+                  "trigger_keyword": {
+                    "default": "",
+                    "title": "Trigger Keyword",
+                    "type": "string"
+                  },
+                  "exact_time": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Exact Time"
+                  },
+                  "component_type": {
+                    "const": "TerminalTyping",
+                    "default": "TerminalTyping",
+                    "title": "Component Type",
+                    "type": "string"
+                  },
+                  "heading": {
+                    "default": "",
+                    "title": "Heading",
+                    "type": "string"
+                  },
+                  "subheading": {
+                    "default": "",
+                    "title": "Subheading",
+                    "type": "string"
+                  },
+                  "title": {
+                    "default": "bash",
+                    "title": "Title",
+                    "type": "string"
+                  },
+                  "prompt": {
+                    "default": "$ ",
+                    "title": "Prompt",
+                    "type": "string"
+                  },
+                  "lines": {
+                    "items": {
+                      "$ref": "#/$defs/TermLine"
+                    },
+                    "title": "Lines",
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "lines"
+                ],
+                "title": "Spec",
+                "type": "object"
+              },
+              {
+                "additionalProperties": true,
+                "properties": {
+                  "trigger_keyword": {
+                    "default": "",
+                    "title": "Trigger Keyword",
+                    "type": "string"
+                  },
+                  "exact_time": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Exact Time"
+                  },
+                  "component_type": {
+                    "const": "TiltedCardComparison",
+                    "default": "TiltedCardComparison",
+                    "title": "Component Type",
+                    "type": "string"
+                  },
+                  "heading": {
+                    "default": "",
+                    "title": "Heading",
+                    "type": "string"
+                  },
+                  "subheading": {
+                    "default": "",
+                    "title": "Subheading",
+                    "type": "string"
+                  },
+                  "cards": {
+                    "items": {
+                      "$ref": "#/$defs/TiltedCardItem"
+                    },
+                    "title": "Cards",
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "cards"
+                ],
+                "title": "Spec",
+                "type": "object"
+              },
+              {
+                "additionalProperties": true,
+                "properties": {
+                  "trigger_keyword": {
+                    "default": "",
+                    "title": "Trigger Keyword",
+                    "type": "string"
+                  },
+                  "exact_time": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Exact Time"
+                  },
+                  "component_type": {
+                    "const": "Timeline",
+                    "default": "Timeline",
+                    "title": "Component Type",
+                    "type": "string"
+                  },
+                  "heading": {
+                    "default": "",
+                    "title": "Heading",
+                    "type": "string"
+                  },
+                  "subheading": {
+                    "default": "",
+                    "title": "Subheading",
+                    "type": "string"
+                  },
+                  "events": {
+                    "items": {
+                      "$ref": "#/$defs/TimelineEvent"
+                    },
+                    "title": "Events",
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "events"
+                ],
+                "title": "Spec",
+                "type": "object"
+              },
+              {
+                "additionalProperties": true,
+                "properties": {
+                  "trigger_keyword": {
+                    "default": "",
+                    "title": "Trigger Keyword",
+                    "type": "string"
+                  },
+                  "exact_time": {
+                    "anyOf": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "default": null,
+                    "title": "Exact Time"
+                  },
+                  "component_type": {
+                    "const": "TitleCard",
+                    "default": "TitleCard",
+                    "title": "Component Type",
+                    "type": "string"
+                  },
+                  "heading": {
+                    "default": "",
+                    "title": "Heading",
+                    "type": "string"
+                  },
+                  "subheading": {
+                    "default": "",
+                    "title": "Subheading",
+                    "type": "string"
+                  },
+                  "eyebrow": {
+                    "default": "",
+                    "title": "Eyebrow",
+                    "type": "string"
+                  },
+                  "title": {
+                    "title": "Title",
+                    "type": "string"
+                  },
+                  "subtitle": {
+                    "default": "",
+                    "title": "Subtitle",
+                    "type": "string"
+                  },
+                  "badge": {
+                    "default": "",
+                    "title": "Badge",
+                    "type": "string"
+                  },
+                  "theme_color": {
+                    "default": "accent",
+                    "enum": [
+                      "accent",
+                      "cyan",
+                      "blue",
+                      "green",
+                      "red",
+                      "amber",
+                      "purple",
+                      "coral",
+                      "pink",
+                      "teal",
+                      "lime",
+                      "gray"
+                    ],
+                    "title": "Theme Color",
+                    "type": "string"
+                  },
+                  "align": {
+                    "default": "center",
+                    "enum": [
+                      "center",
+                      "left"
+                    ],
+                    "title": "Align",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "title"
+                ],
+                "title": "Spec",
+                "type": "object"
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "ArchEdgeItem": {
+      "additionalProperties": true,
+      "properties": {
+        "trigger_keyword": {
+          "default": "",
+          "title": "Trigger Keyword",
+          "type": "string"
+        },
+        "exact_time": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exact Time"
+        },
+        "source": {
+          "title": "Source",
+          "type": "string"
+        },
+        "target": {
+          "title": "Target",
+          "type": "string"
+        },
+        "label": {
+          "default": "",
+          "title": "Label",
+          "type": "string"
+        },
+        "color_theme": {
+          "default": "cyan",
+          "enum": [
+            "accent",
+            "cyan",
+            "blue",
+            "green",
+            "red",
+            "amber",
+            "purple",
+            "coral",
+            "pink",
+            "teal",
+            "lime",
+            "gray"
+          ],
+          "title": "Color Theme",
+          "type": "string"
+        },
+        "is_blocked": {
+          "default": false,
+          "title": "Is Blocked",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "source",
+        "target"
+      ],
+      "title": "ArchEdgeItem",
+      "type": "object"
+    },
+    "ArchNodeItem": {
+      "additionalProperties": true,
+      "properties": {
+        "trigger_keyword": {
+          "default": "",
+          "title": "Trigger Keyword",
+          "type": "string"
+        },
+        "exact_time": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exact Time"
+        },
+        "node_id": {
+          "title": "Node Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "sublabel": {
+          "default": "",
+          "title": "Sublabel",
+          "type": "string"
+        },
+        "icon": {
+          "default": "server",
+          "title": "Icon",
+          "type": "string"
+        },
+        "color_theme": {
+          "default": "cyan",
+          "enum": [
+            "accent",
+            "cyan",
+            "blue",
+            "green",
+            "red",
+            "amber",
+            "purple",
+            "coral",
+            "pink",
+            "teal",
+            "lime",
+            "gray"
+          ],
+          "title": "Color Theme",
+          "type": "string"
+        }
+      },
+      "required": [
+        "node_id",
+        "label"
+      ],
+      "title": "ArchNodeItem",
+      "type": "object"
+    },
+    "BTreeNodeSpec": {
+      "additionalProperties": true,
+      "properties": {
+        "trigger_keyword": {
+          "default": "",
+          "title": "Trigger Keyword",
+          "type": "string"
+        },
+        "exact_time": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exact Time"
+        },
+        "page_id": {
+          "title": "Page Id",
+          "type": "string"
+        },
+        "keys_text": {
+          "title": "Keys Text",
+          "type": "string"
+        },
+        "subtext": {
+          "default": "",
+          "title": "Subtext",
+          "type": "string"
+        },
+        "level": {
+          "default": 0,
+          "title": "Level",
+          "type": "integer"
+        },
+        "is_target_path": {
+          "default": false,
+          "title": "Is Target Path",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "page_id",
+        "keys_text"
+      ],
+      "title": "BTreeNodeSpec",
+      "type": "object"
+    },
+    "BarItem": {
+      "additionalProperties": true,
+      "properties": {
+        "trigger_keyword": {
+          "default": "",
+          "title": "Trigger Keyword",
+          "type": "string"
+        },
+        "exact_time": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exact Time"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "number"
+        },
+        "color_theme": {
+          "default": "accent",
+          "enum": [
+            "accent",
+            "cyan",
+            "blue",
+            "green",
+            "red",
+            "amber",
+            "purple",
+            "coral",
+            "pink",
+            "teal",
+            "lime",
+            "gray"
+          ],
+          "title": "Color Theme",
+          "type": "string"
+        },
+        "highlight": {
+          "default": false,
+          "title": "Highlight",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "label",
+        "value"
+      ],
+      "title": "BarItem",
+      "type": "object"
+    },
+    "StatItem": {
+      "additionalProperties": true,
+      "properties": {
+        "trigger_keyword": {
+          "default": "",
+          "title": "Trigger Keyword",
+          "type": "string"
+        },
+        "exact_time": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exact Time"
+        },
+        "value": {
+          "title": "Value",
+          "type": "number"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "prefix": {
+          "default": "",
+          "title": "Prefix",
+          "type": "string"
+        },
+        "suffix": {
+          "default": "",
+          "title": "Suffix",
+          "type": "string"
+        },
+        "decimals": {
+          "default": 0,
+          "title": "Decimals",
+          "type": "integer"
+        },
+        "sublabel": {
+          "default": "",
+          "title": "Sublabel",
+          "type": "string"
+        },
+        "delta": {
+          "default": "",
+          "title": "Delta",
+          "type": "string"
+        },
+        "delta_positive": {
+          "default": true,
+          "title": "Delta Positive",
+          "type": "boolean"
+        },
+        "icon": {
+          "default": "",
+          "title": "Icon",
+          "type": "string"
+        },
+        "color_theme": {
+          "default": "accent",
+          "enum": [
+            "accent",
+            "cyan",
+            "blue",
+            "green",
+            "red",
+            "amber",
+            "purple",
+            "coral",
+            "pink",
+            "teal",
+            "lime",
+            "gray"
+          ],
+          "title": "Color Theme",
+          "type": "string"
+        }
+      },
+      "required": [
+        "value",
+        "label"
+      ],
+      "title": "StatItem",
+      "type": "object"
+    },
+    "TableRow": {
+      "additionalProperties": true,
+      "properties": {
+        "trigger_keyword": {
+          "default": "",
+          "title": "Trigger Keyword",
+          "type": "string"
+        },
+        "exact_time": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exact Time"
+        },
+        "cells": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Cells",
+          "type": "array"
+        }
+      },
+      "required": [
+        "cells"
+      ],
+      "title": "TableRow",
+      "type": "object"
+    },
+    "SliceItem": {
+      "additionalProperties": true,
+      "properties": {
+        "trigger_keyword": {
+          "default": "",
+          "title": "Trigger Keyword",
+          "type": "string"
+        },
+        "exact_time": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exact Time"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "number"
+        },
+        "color_theme": {
+          "default": "accent",
+          "enum": [
+            "accent",
+            "cyan",
+            "blue",
+            "green",
+            "red",
+            "amber",
+            "purple",
+            "coral",
+            "pink",
+            "teal",
+            "lime",
+            "gray"
+          ],
+          "title": "Color Theme",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "value"
+      ],
+      "title": "SliceItem",
+      "type": "object"
+    },
+    "CarouselCardItem": {
+      "additionalProperties": true,
+      "properties": {
+        "trigger_keyword": {
+          "default": "",
+          "title": "Trigger Keyword",
+          "type": "string"
+        },
+        "exact_time": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exact Time"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "subtitle": {
+          "default": "",
+          "title": "Subtitle",
+          "type": "string"
+        },
+        "icon": {
+          "default": "zap",
+          "title": "Icon",
+          "type": "string"
+        },
+        "color_theme": {
+          "default": "cyan",
+          "enum": [
+            "accent",
+            "cyan",
+            "blue",
+            "green",
+            "red",
+            "amber",
+            "purple",
+            "coral",
+            "pink",
+            "teal",
+            "lime",
+            "gray"
+          ],
+          "title": "Color Theme",
+          "type": "string"
+        }
+      },
+      "required": [
+        "title"
+      ],
+      "title": "CarouselCardItem",
+      "type": "object"
+    },
+    "HexHighlight": {
+      "additionalProperties": true,
+      "properties": {
+        "trigger_keyword": {
+          "default": "",
+          "title": "Trigger Keyword",
+          "type": "string"
+        },
+        "exact_time": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exact Time"
+        },
+        "row": {
+          "title": "Row",
+          "type": "integer"
+        },
+        "col_start": {
+          "title": "Col Start",
+          "type": "integer"
+        },
+        "col_end": {
+          "title": "Col End",
+          "type": "integer"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "value_desc": {
+          "default": "",
+          "title": "Value Desc",
+          "type": "string"
+        },
+        "color_theme": {
+          "default": "cyan",
+          "enum": [
+            "accent",
+            "cyan",
+            "blue",
+            "green",
+            "red",
+            "amber",
+            "purple",
+            "coral",
+            "pink",
+            "teal",
+            "lime",
+            "gray"
+          ],
+          "title": "Color Theme",
+          "type": "string"
+        }
+      },
+      "required": [
+        "row",
+        "col_start",
+        "col_end",
+        "label"
+      ],
+      "title": "HexHighlight",
+      "type": "object"
+    },
+    "HexRow": {
+      "additionalProperties": true,
+      "properties": {
+        "trigger_keyword": {
+          "default": "",
+          "title": "Trigger Keyword",
+          "type": "string"
+        },
+        "exact_time": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exact Time"
+        },
+        "offset": {
+          "title": "Offset",
+          "type": "string"
+        },
+        "bytes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Bytes",
+          "type": "array"
+        },
+        "ascii": {
+          "default": "",
+          "title": "Ascii",
+          "type": "string"
+        }
+      },
+      "required": [
+        "offset",
+        "bytes"
+      ],
+      "title": "HexRow",
+      "type": "object"
+    },
+    "ImageItem": {
+      "additionalProperties": true,
+      "properties": {
+        "trigger_keyword": {
+          "default": "",
+          "title": "Trigger Keyword",
+          "type": "string"
+        },
+        "exact_time": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exact Time"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "caption": {
+          "default": "",
+          "title": "Caption",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path"
+      ],
+      "title": "ImageItem",
+      "type": "object"
+    },
+    "ListItem": {
+      "additionalProperties": true,
+      "properties": {
+        "trigger_keyword": {
+          "default": "",
+          "title": "Trigger Keyword",
+          "type": "string"
+        },
+        "exact_time": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exact Time"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "detail": {
+          "default": "",
+          "title": "Detail",
+          "type": "string"
+        },
+        "icon": {
+          "default": "",
+          "title": "Icon",
+          "type": "string"
+        },
+        "color_theme": {
+          "default": "accent",
+          "enum": [
+            "accent",
+            "cyan",
+            "blue",
+            "green",
+            "red",
+            "amber",
+            "purple",
+            "coral",
+            "pink",
+            "teal",
+            "lime",
+            "gray"
+          ],
+          "title": "Color Theme",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "ListItem",
+      "type": "object"
+    },
+    "Annotation": {
+      "additionalProperties": true,
+      "properties": {
+        "trigger_keyword": {
+          "default": "",
+          "title": "Trigger Keyword",
+          "type": "string"
+        },
+        "exact_time": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exact Time"
+        },
+        "index": {
+          "title": "Index",
+          "type": "integer"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "series": {
+          "default": 0,
+          "title": "Series",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "index",
+        "text"
+      ],
+      "title": "Annotation",
+      "type": "object"
+    },
+    "Series": {
+      "additionalProperties": true,
+      "properties": {
+        "trigger_keyword": {
+          "default": "",
+          "title": "Trigger Keyword",
+          "type": "string"
+        },
+        "exact_time": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exact Time"
+        },
+        "name": {
+          "default": "",
+          "title": "Name",
+          "type": "string"
+        },
+        "values": {
+          "items": {
+            "type": "number"
+          },
+          "title": "Values",
+          "type": "array"
+        },
+        "color_theme": {
+          "default": "accent",
+          "enum": [
+            "accent",
+            "cyan",
+            "blue",
+            "green",
+            "red",
+            "amber",
+            "purple",
+            "coral",
+            "pink",
+            "teal",
+            "lime",
+            "gray"
+          ],
+          "title": "Color Theme",
+          "type": "string"
+        }
+      },
+      "required": [
+        "values"
+      ],
+      "title": "Series",
+      "type": "object"
+    },
+    "CodeStep": {
+      "additionalProperties": true,
+      "properties": {
+        "trigger_keyword": {
+          "default": "",
+          "title": "Trigger Keyword",
+          "type": "string"
+        },
+        "exact_time": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exact Time"
+        },
+        "lines": {
+          "items": {
+            "type": "integer"
+          },
+          "title": "Lines",
+          "type": "array"
+        },
+        "note": {
+          "default": "",
+          "title": "Note",
+          "type": "string"
+        }
+      },
+      "required": [
+        "lines"
+      ],
+      "title": "CodeStep",
+      "type": "object"
+    },
+    "Branch": {
+      "additionalProperties": true,
+      "properties": {
+        "trigger_keyword": {
+          "default": "",
+          "title": "Trigger Keyword",
+          "type": "string"
+        },
+        "exact_time": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exact Time"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "detail": {
+          "default": "",
+          "title": "Detail",
+          "type": "string"
+        },
+        "icon": {
+          "default": "",
+          "title": "Icon",
+          "type": "string"
+        },
+        "color_theme": {
+          "default": "cyan",
+          "enum": [
+            "accent",
+            "cyan",
+            "blue",
+            "green",
+            "red",
+            "amber",
+            "purple",
+            "coral",
+            "pink",
+            "teal",
+            "lime",
+            "gray"
+          ],
+          "title": "Color Theme",
+          "type": "string"
+        },
+        "children": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Children",
+          "type": "array"
+        }
+      },
+      "required": [
+        "label"
+      ],
+      "title": "Branch",
+      "type": "object"
+    },
+    "StepItem": {
+      "additionalProperties": true,
+      "properties": {
+        "trigger_keyword": {
+          "default": "",
+          "title": "Trigger Keyword",
+          "type": "string"
+        },
+        "exact_time": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exact Time"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "detail": {
+          "default": "",
+          "title": "Detail",
+          "type": "string"
+        },
+        "icon": {
+          "default": "",
+          "title": "Icon",
+          "type": "string"
+        },
+        "color_theme": {
+          "default": "accent",
+          "enum": [
+            "accent",
+            "cyan",
+            "blue",
+            "green",
+            "red",
+            "amber",
+            "purple",
+            "coral",
+            "pink",
+            "teal",
+            "lime",
+            "gray"
+          ],
+          "title": "Color Theme",
+          "type": "string"
+        }
+      },
+      "required": [
+        "title"
+      ],
+      "title": "StepItem",
+      "type": "object"
+    },
+    "ProsConsItem": {
+      "additionalProperties": true,
+      "properties": {
+        "trigger_keyword": {
+          "default": "",
+          "title": "Trigger Keyword",
+          "type": "string"
+        },
+        "exact_time": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exact Time"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "ProsConsItem",
+      "type": "object"
+    },
+    "TermLine": {
+      "additionalProperties": true,
+      "properties": {
+        "trigger_keyword": {
+          "default": "",
+          "title": "Trigger Keyword",
+          "type": "string"
+        },
+        "exact_time": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exact Time"
+        },
+        "kind": {
+          "default": "output",
+          "enum": [
+            "command",
+            "output",
+            "error",
+            "success",
+            "comment"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "TermLine",
+      "type": "object"
+    },
+    "TiltedCardItem": {
+      "additionalProperties": true,
+      "properties": {
+        "trigger_keyword": {
+          "default": "",
+          "title": "Trigger Keyword",
+          "type": "string"
+        },
+        "exact_time": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exact Time"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        },
+        "subtext": {
+          "default": "",
+          "title": "Subtext",
+          "type": "string"
+        },
+        "icon": {
+          "default": "database",
+          "title": "Icon",
+          "type": "string"
+        },
+        "color_theme": {
+          "default": "cyan",
+          "enum": [
+            "accent",
+            "cyan",
+            "blue",
+            "green",
+            "red",
+            "amber",
+            "purple",
+            "coral",
+            "pink",
+            "teal",
+            "lime",
+            "gray"
+          ],
+          "title": "Color Theme",
+          "type": "string"
+        },
+        "is_hero": {
+          "default": false,
+          "title": "Is Hero",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "title",
+        "value"
+      ],
+      "title": "TiltedCardItem",
+      "type": "object"
+    },
+    "TimelineEvent": {
+      "additionalProperties": true,
+      "properties": {
+        "trigger_keyword": {
+          "default": "",
+          "title": "Trigger Keyword",
+          "type": "string"
+        },
+        "exact_time": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Exact Time"
+        },
+        "date": {
+          "title": "Date",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "detail": {
+          "default": "",
+          "title": "Detail",
+          "type": "string"
+        },
+        "color_theme": {
+          "default": "accent",
+          "enum": [
+            "accent",
+            "cyan",
+            "blue",
+            "green",
+            "red",
+            "amber",
+            "purple",
+            "coral",
+            "pink",
+            "teal",
+            "lime",
+            "gray"
+          ],
+          "title": "Color Theme",
+          "type": "string"
+        }
+      },
+      "required": [
+        "date",
+        "title"
+      ],
+      "title": "TimelineEvent",
+      "type": "object"
+    }
+  }
+}

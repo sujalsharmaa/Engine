@@ -1,14 +1,16 @@
 """
-Step 1: Audio-Driven Timing Engine (Forced Alignment)
------------------------------------------------------
-Takes a raw voiceover audio file, runs faster-whisper to extract exact 
-word-level start and end times, and structures it into a validated Pydantic model.
+engine/audio_aligner.py
+-------------------------------------------------------------------------
+Voiceover -> word-level timestamps (faster-whisper). The narration script is
+passed as `initial_prompt`, which noticeably improves recognition of jargon
+(PromQL, Kubernetes, gRPC ...). Results are cached by audio hash + model.
 """
 
+import hashlib
 import json
 from pathlib import Path
 from typing import List
-from faster_whisper import WhisperModel
+
 from pydantic import BaseModel, Field
 
 
@@ -23,66 +25,54 @@ class TranscriptAlignment(BaseModel):
     duration: float
     words: List[WordTimestamp] = Field(default_factory=list)
 
-    def get_timestamp_for_keyword(self, keyword: str) -> float:
-        """Finds the exact start time of a specific keyword in the voiceover."""
-        kw_lower = keyword.strip().lower()
-        for item in self.words:
-            if kw_lower in item.word.strip().lower():
-                return item.start
-        return 0.0  # Fallback if keyword not found
-
 
 class AudioAlignerPipeline:
     def __init__(self, model_size: str = "base", device: str = "cpu", compute_type: str = "int8"):
-        print(f"[*] Loading Whisper model ({model_size}) on {device}...")
-        self.model = WhisperModel(model_size, device=device, compute_type=compute_type)
+        self.model_size, self.device, self.compute_type = model_size, device, compute_type
+        self._model = None
 
-    def process_audio(self, audio_filepath: str, output_json_path: str = "word_timestamps.json") -> TranscriptAlignment:
-        audio_path = Path(audio_filepath)
-        if not audio_path.exists():
-            raise FileNotFoundError(f"Audio file not found: {audio_filepath}")
+    def _load(self):
+        if self._model is None:
+            from faster_whisper import WhisperModel
+            print(f"[*] Loading Whisper model ({self.model_size}) on {self.device}...")
+            self._model = WhisperModel(self.model_size, device=self.device, compute_type=self.compute_type)
+        return self._model
 
-        print(f"[*] Transcribing and extracting word-level timestamps for: {audio_path.name}...")
-        segments, info = self.model.transcribe(str(audio_path), word_timestamps=True)
+    @staticmethod
+    def _key(audio: str, model: str, prompt: str) -> str:
+        h = hashlib.sha1()
+        with open(audio, "rb") as f:
+            for chunk in iter(lambda: f.read(1 << 20), b""):
+                h.update(chunk)
+        h.update(model.encode())
+        h.update(prompt.encode())
+        return h.hexdigest()[:16]
 
-        all_words = []
-        for segment in segments:
-            if segment.words:
-                for w in segment.words:
-                    all_words.append(
-                        WordTimestamp(
-                            word=w.word,
-                            start=round(w.start, 3),
-                            end=round(w.end, 3)
-                        )
-                    )
-
-        alignment = TranscriptAlignment(
-            audio_path=str(audio_path),
-            duration=round(info.duration, 3),
-            words=all_words
-        )
-
-        # Save to disk for subsequent compiler steps
-        out_path = Path(output_json_path)
-        out_path.write_text(alignment.model_dump_json(indent=2), encoding="utf-8")
-        print(f"[+] Alignment complete! Saved {len(all_words)} word timestamps to {out_path.resolve()}")
-
-        return alignment
-
-
-# --- Example Execution ---
-if __name__ == "__main__":
-    # To test locally:
-    # 1. Place an audio file named 'voiceover.mp3' in your directory.
-    # 2. Run: python engine/audio_aligner.py
-    audio_file = "voiceover.mp3"
-    if Path(audio_file).exists():
-        aligner = AudioAlignerPipeline(model_size="base")
-        result = aligner.process_audio(audio_file)
-        
-        # Example query for keyword synchronization
-        target_time = result.get_timestamp_for_keyword("SQLite")
-        print(f"[DEBUG] The word 'SQLite' was spoken at: {target_time} seconds.")
-    else:
-        print(f"[-] Place a sample '{audio_file}' in this folder to run the alignment test.")
+    def process_audio(self, audio_filepath: str, output_json_path: str = "word_timestamps.json",
+                      script_hint: str = "", language: str = None) -> TranscriptAlignment:
+        audio = Path(audio_filepath)
+        if not audio.exists():
+            raise FileNotFoundError(f"Audio not found: {audio}")
+        key = self._key(str(audio), self.model_size, script_hint[:900])
+        out = Path(output_json_path)
+        if out.exists():
+            try:
+                cached = json.loads(out.read_text(encoding="utf-8"))
+                if cached.get("cache_key") == key:
+                    print("[*] Using cached word timestamps")
+                    return TranscriptAlignment(**{k: v for k, v in cached.items() if k != "cache_key"})
+            except Exception:
+                pass
+        model = self._load()
+        print(f"[*] Aligning {audio.name} ...")
+        segments, info = model.transcribe(str(audio), word_timestamps=True, beam_size=5, language=language,
+                                          initial_prompt=script_hint[:900] or None, vad_filter=False)
+        words = [WordTimestamp(word=w.word.strip(), start=round(w.start, 3), end=round(w.end, 3))
+                 for seg in segments for w in (seg.words or [])]
+        result = TranscriptAlignment(audio_path=str(audio), duration=round(float(info.duration), 3), words=words)
+        data = result.model_dump()
+        data["cache_key"] = key
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+        print(f"[+] {len(words)} words, {result.duration:.1f}s")
+        return result

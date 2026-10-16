@@ -4,3 +4,5 @@ pydantic==2.6.0
 opencv-python-headless==4.9.0.80
 numpy==1.26.4
 av==11.0.0
+Pillow>=10
+pygments>=2.17

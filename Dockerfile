@@ -1,29 +1,14 @@
-# Use stable Python Linux image
 FROM python:3.11-slim
 
-# Prevent interactive prompts during apt installation
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Install system dependencies required by Manim, OpenCV, and FFmpeg
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ffmpeg \
-    libcairo2-dev \
-    libpango1.0-dev \
-    libpangocairo-1.0-0 \
-    pkg-config \
-    build-essential \
-    git \
+        ffmpeg build-essential pkg-config libcairo2-dev libpango1.0-dev libglib2.0-dev \
+        fontconfig fonts-inter fonts-dejavu-core \
     && rm -rf /var/lib/apt/lists/*
 
-# Set working directory inside container
-WORKDIR /app
-
-# Copy dependency list and install Python packages
+WORKDIR /studio
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
 
-# Copy the rest of your project code into the container
-COPY . /app
-
-# Default command to run the studio pipeline
+# usage: docker run --rm -v "$PWD":/studio -w /studio IMAGE python run_studio.py --script my.json --audio vo.mp3
 ENTRYPOINT ["python", "run_studio.py"]
